@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export const Form = ({ add, setShowTodos }) => {
+export const Form = ({ add }) => {
   const [title, setTitle] = useState('');
 
   const handleTitle = ({ target: { value }}) => {
@@ -9,8 +9,10 @@ export const Form = ({ add, setShowTodos }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    add(title)
-    setTitle('')
+    if(title) {
+      add(title)
+      setTitle('')
+    } 
   }
 
   return (
