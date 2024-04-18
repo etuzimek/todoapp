@@ -1,23 +1,32 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import { Form } from './components/Form';
+import { ListToDo } from './components/ListToDo';
 
 function App() {
+  const [todo, setTodo] = useState([]);
+
+  const addTodo = (title) => {
+    const newTodo = {
+      id: todo.length === 0 ? 1 : Math.max(...todo.map(todo => todo.id)) + 1,
+      title,
+      completed: false,
+    }
+    setTodo((prev) => [...prev, newTodo])
+  }
+
+  const removeTodo = (todoId) => () => {
+    setTodo(prev => prev.filter(item => item.id !== todoId))
+    }
+
+  const handleDone = (todoId) => () => {
+    setTodo(prev => prev.map(item => item.id === todoId ? {...item, completed: !item.completed} : item))
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Form add={addTodo} />
+      <ListToDo todo={todo} remove={removeTodo} handleDone={handleDone} />
     </div>
   );
 }
